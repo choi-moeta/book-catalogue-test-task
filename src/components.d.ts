@@ -4,7 +4,12 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AppBlock: typeof import('./components/app-block.vue')['default']
+    AppBook: typeof import('./components/app-book.vue')['default']
+    AppBooks: typeof import('./components/app-books.vue')['default']
     AppButton: typeof import('./components/app-button.vue')['default']
+    AppProfile: typeof import('./components/app-profile.vue')['default']
+    AppRecomendation: typeof import('./components/app-recomendation.vue')['default']
     AppTitle: typeof import('./components/app-title.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     'IconCarbon:favorite': typeof import('~icons/carbon/favorite')['default']
