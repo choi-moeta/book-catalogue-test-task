@@ -18,6 +18,8 @@
     "unplugin-auto-import": "^0.4.13",
     "unplugin-icons": "^0.12.16",
     "unplugin-vue-components": "^0.16.0",
+    "vite-plugin-windicss": "^1.4.12",
+    "windicss": "^3.1.9",
     "vite": "^2.6.4",
     "vue-tsc": "^0.3.0"
   }
