@@ -1,15 +1,10 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
-defineProps({
-  type: {
-    type: String as PropType<'primary' | 'transparent'>,
-    default: 'primary',
-  },
-  size: {
-    type: String as PropType<'sm' | 'md'>,
-    default: 'md',
-  },
+withDefaults(defineProps<{
+  type: 'primary' | 'transparent'
+  size: 'sm' | 'md'
+}>(), {
+  type: 'primary',
+  size: 'md',
 })
 </script>
 
