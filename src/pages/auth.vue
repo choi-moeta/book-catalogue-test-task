@@ -13,7 +13,7 @@ watch(isAuthenticated, (val) => {
 </script>
 
 <template>
-  <div
+  <app-block
     class="
       max-w-400px
       border border-gray-300 dark:border-gray-700
@@ -31,5 +31,5 @@ watch(isAuthenticated, (val) => {
     <app-button class="mt-8" @click="signIn">
       Sign in with google
     </app-button>
-  </div>
+  </app-block>
 </template>
