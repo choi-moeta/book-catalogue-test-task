@@ -3,10 +3,9 @@
 <template>
   <div
     class="
-      border border-gray-300 dark:border-gray-700
+      border border-regular
       rounded
-      p-4
-      flex flex-col
+      py-3 px-4
     "
   >
     <slot />

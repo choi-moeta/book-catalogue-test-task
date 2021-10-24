@@ -3,7 +3,7 @@
 
 <template>
   <div
-    class="mx-auto flex flex-row-reverse gap-8 justify-center items-start"
+    class="mx-auto px-8 flex flex-row-reverse gap-8 justify-center items-start"
   >
     <aside class="self-stretch">
       <div class="flex flex-col gap-8 mt-100px sticky top-8">
