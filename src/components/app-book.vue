@@ -8,11 +8,11 @@ const authorsStr = computed(() => props.book.authors.reduce((acc, cur, i, arr) =
 </script>
 
 <template>
-  <app-block class="flex flex-col gap-1">
+  <app-block class="flex flex-col gap-1 group">
     <div class="flex gap-2 items-start justify-between">
-      <div class="font-semibold text-regular">
+      <router-link :to="`/book/${book.id}`" class="font-semibold text-regular">
         {{ book.name }}
-      </div>
+      </router-link>
       <template v-if="book.rating !== undefined">
         <div class="border border-regular px-2 pt-0.5 pb-1 rounded text-xs flex-shrink-0">
           {{ book.rating }} / 10
