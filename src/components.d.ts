@@ -11,7 +11,7 @@ declare module 'vue' {
     AppBooks: typeof import('./components/app-books.vue')['default']
     AppButton: typeof import('./components/app-button.vue')['default']
     AppProfile: typeof import('./components/app-profile.vue')['default']
-    AppRecomendation: typeof import('./components/app-recomendation.vue')['default']
+    AppRecommendation: typeof import('./components/app-recommendation.vue')['default']
     AppTitle: typeof import('./components/app-title.vue')['default']
     'IconCarbon:add': typeof import('~icons/carbon/add')['default']
     'IconCarbon:close': typeof import('~icons/carbon/close')['default']

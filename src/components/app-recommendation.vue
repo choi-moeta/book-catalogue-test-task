@@ -21,7 +21,7 @@ const recommendedBook = computed(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <app-title>⭐ Recomendation</app-title>
+    <app-title>⭐ Recommendation</app-title>
     <template v-if="recommendedBook">
       <app-book :book="recommendedBook" />
     </template>

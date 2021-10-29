@@ -12,7 +12,7 @@
   >
     <aside class="self-stretch md:order-2">
       <div class="flex flex-col gap-8 md:mt-100px sticky top-4">
-        <app-recomendation />
+        <app-recommendation />
         <app-profile />
       </div>
     </aside>
