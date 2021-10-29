@@ -6,13 +6,15 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppBlock: typeof import('./components/app-block.vue')['default']
     AppBook: typeof import('./components/app-book.vue')['default']
+    AppBookEditable: typeof import('./components/app-book-editable.vue')['default']
+    AppBookEditableEntry: typeof import('./components/app-book-editable-entry.vue')['default']
     AppBooks: typeof import('./components/app-books.vue')['default']
     AppButton: typeof import('./components/app-button.vue')['default']
     AppProfile: typeof import('./components/app-profile.vue')['default']
     AppRecomendation: typeof import('./components/app-recomendation.vue')['default']
     AppTitle: typeof import('./components/app-title.vue')['default']
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
-    'IconCarbon:favorite': typeof import('~icons/carbon/favorite')['default']
+    'IconCarbon:add': typeof import('~icons/carbon/add')['default']
+    'IconCarbon:close': typeof import('~icons/carbon/close')['default']
   }
 }
 
