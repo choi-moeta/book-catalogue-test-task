@@ -17,18 +17,11 @@ body {
   }
 }
 
-.text-regular {
-  @apply text-gray-700 dark:text-gray-200;
+:link {
+  @apply hover:underline;
 }
 
-.text-dim {
-  @apply text-gray-500 dark:text-gray-400;
+input {
+  @apply bg-transparent rounded px-2 border border-gray-300 dark:border-gray-700
 }
 
-.text-bright {
-  @apply text-black dark:text-white;
-}
-
-.border-regular {
-  @apply border-gray-300 dark:border-gray-700;
-}
