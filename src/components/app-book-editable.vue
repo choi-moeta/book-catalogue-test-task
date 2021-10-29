@@ -131,12 +131,12 @@ function handleSave() {
               :value="author"
               @change="handleAuthorChange(i, $event)"
             >
-            <app-button icon type="transparent" @click="deleteAuthor(i)">
+            <app-button :icon="true" type="transparent" @click="deleteAuthor(i)">
               <icon-carbon:close />
             </app-button>
           </div>
         </template>
-        <app-button icon type="secondary" @click="addEmptyAuthor">
+        <app-button :icon="true" type="secondary" @click="addEmptyAuthor">
           <icon-carbon:add />
         </app-button>
       </app-book-editable-entry>
