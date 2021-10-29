@@ -3,6 +3,9 @@ import colors from 'windicss/colors'
 
 export default defineConfig({
   darkMode: 'media',
+  preflight: {
+    safelist: 'button',
+  },
   theme: {
     extend: {
       colors: {
