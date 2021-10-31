@@ -43,6 +43,7 @@ const errors = reactive<Record<string, string | null>>({
   authors: null,
   rating: null,
   year: null,
+  ISBN: null,
 })
 
 const isError = computed(() => Boolean(Object.values(errors).find(e => typeof e === 'string')))
@@ -73,6 +74,9 @@ function handleChange() {
     || innerBook.year < BOOK_YEAR_MIN)) {
     errors.year = 'Year must be between 0 and 3000'
   }
+  if (innerBook.ISBN && !validateISBN(innerBook.ISBN)) {
+    errors.ISBN = 'Invalid ISBN'
+  }
 
   if (innerBook.rating === '' || innerBook.rating === undefined) {
     delete innerBook.rating
@@ -85,6 +89,23 @@ function handleChange() {
     return emit('error')
   }
   return emit('change', { ...innerBook } as BookData)
+}
+
+function validateISBN(str: string) {
+  const digits = str
+    .split('-')
+    .join('')
+    .split('')
+    .map(Number)
+
+  if (digits.length === 11) {
+    return digits.reduce((acc, cur, idx, arr) => acc + (arr.length - idx) * cur, 0) % 11 === 0
+  }
+  else if (digits.length === 13) {
+    return digits.reduce((acc, cur, idx) => acc + (idx % 2 === 0 ? 1 : 3) * cur, 0) % 10 === 0
+  }
+
+  return false
 }
 
 function handleAuthorChange(i: number, e: Event) {
@@ -106,8 +127,6 @@ function handleCancel() {
 }
 
 function handleSave() {
-  console.log(innerBook)
-
   emit('save', innerBook as BookData)
 }
 </script>
