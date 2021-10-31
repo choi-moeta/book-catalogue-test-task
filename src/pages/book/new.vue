@@ -12,8 +12,8 @@ const book = ref<Book | BookData>({
 const books = useBooksStore()
 const router = useRouter()
 
-async function handleCreate() {
-  const { id } = await books.create(book.value)
+async function handleCreate(newBook: BookData) {
+  const { id } = await books.create(newBook)
   router.push(`/book/${id}`)
 }
 </script>
