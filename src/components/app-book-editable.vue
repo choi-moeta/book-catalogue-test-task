@@ -47,6 +47,9 @@ const errors = reactive<Record<string, string | null>>({
 
 const isError = computed(() => Boolean(Object.values(errors).find(e => typeof e === 'string')))
 
+// validate form
+onMounted(handleChange)
+
 function handleChange() {
   // reset
   Object.keys(errors).map(key => errors[key] = null)
@@ -103,6 +106,8 @@ function handleCancel() {
 }
 
 function handleSave() {
+  console.log(innerBook)
+
   emit('save', innerBook as BookData)
 }
 </script>
