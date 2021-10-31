@@ -5,6 +5,7 @@ import {
   getDocs,
   getDoc,
   setDoc,
+  addDoc,
   deleteDoc,
   CollectionReference,
 } from 'firebase/firestore/lite'
@@ -36,9 +37,7 @@ export async function fetchBook(id: string) {
 }
 
 export async function createBook(book: BookData) {
-  const bookDoc = doc(booksRef)
-  await setDoc(doc(booksRef), book)
-  return bookDoc
+  return await addDoc(booksRef, book)
 }
 
 export async function editBook(id: string, book: BookData) {
