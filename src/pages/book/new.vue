@@ -19,7 +19,7 @@ async function handleCreate(newBook: BookData) {
 </script>
 
 <template>
-  <div class="max-w-screen-sm mx-auto mt-100px flex flex-col gap-4">
+  <book-page-wrap>
     <app-title>📕 New book</app-title>
     <app-book-editable
       :book="book"
@@ -27,5 +27,5 @@ async function handleCreate(newBook: BookData) {
       save-text="Create"
       @save="handleCreate"
     />
-  </div>
+  </book-page-wrap>
 </template>

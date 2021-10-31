@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { BookData } from '../../firebase'
 import { useBooksStore } from '../../store/books'
 
@@ -6,10 +7,12 @@ const props = defineProps<{ id: string }>()
 
 const books = useBooksStore()
 const { book, isLoading } = toRefs(books.getOne(props.id))
+const router = useRouter()
 
-function handleDelete() {
+async function handleDelete() {
   if (book.value) {
-    books.delete(book.value.id)
+    await books.delete(book.value.id)
+    router.push('/')
   }
 }
 
@@ -42,7 +45,7 @@ function saveEditing(newBook: BookData) {
 </script>
 
 <template>
-  <div class="max-w-screen-sm mx-auto mt-100px flex flex-col gap-4">
+  <book-page-wrap>
     <template v-if="isLoading">
       <app-title>📖 Book</app-title>
       <div>⌛ Loading</div>
@@ -69,5 +72,5 @@ function saveEditing(newBook: BookData) {
         </div>
       </template>
     </template>
-  </div>
+  </book-page-wrap>
 </template>
