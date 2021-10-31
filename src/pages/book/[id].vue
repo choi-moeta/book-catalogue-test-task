@@ -5,7 +5,7 @@ import { useBooksStore } from '../../store/books'
 const props = defineProps<{ id: string }>()
 
 const books = useBooksStore()
-const book = books.getOne(props.id)
+const { book, isLoading } = toRefs(books.getOne(props.id))
 
 function handleDelete() {
   if (book.value) {
@@ -43,7 +43,11 @@ function saveEditing(newBook: BookData) {
 
 <template>
   <div class="max-w-screen-sm mx-auto mt-100px flex flex-col gap-4">
-    <template v-if="book">
+    <template v-if="isLoading">
+      <app-title>📖 Book</app-title>
+      <div>⌛ Loading</div>
+    </template>
+    <template v-else-if="book">
       <template v-if="isEditing">
         <app-title>📝 Editing book</app-title>
         <app-book-editable
@@ -64,9 +68,6 @@ function saveEditing(newBook: BookData) {
           </app-button>
         </div>
       </template>
-    </template>
-    <template v-else>
-      no book
     </template>
   </div>
 </template>

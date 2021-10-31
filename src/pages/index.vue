@@ -11,7 +11,8 @@
     "
   >
     <aside class="self-stretch md:order-2">
-      <div class="flex flex-col gap-8 md:mt-100px sticky top-4">
+      <div class="flex flex-col gap-4 md:mt-100px sticky top-4">
+        <app-title>⭐ Recommendation</app-title>
         <app-recommendation />
       </div>
     </aside>

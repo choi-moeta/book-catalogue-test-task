@@ -24,7 +24,10 @@ const groupedBooks = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <template v-if="books.isLoading">
+    <div>⌛ Fetching books</div>
+  </template>
+  <template v-else>
     <div class="flex flex-col gap-4">
       <template v-for="(group, groupIdx) of groupedBooks" :key="group.year">
         <details :open="groupIdx == 0" class="flex flex-col">
@@ -45,5 +48,5 @@ const groupedBooks = computed(() => {
         </details>
       </template>
     </div>
-  </div>
+  </template>
 </template>

@@ -16,20 +16,23 @@ export const useBooksStore = defineStore('books', () => {
 
   const isEmpty = computed(() => !books.value || books.value.length === 0)
 
+  const isLoading = ref(true)
+
   // methods
   async function fetch() {
     books.value = await fetchBooks()
+    isLoading.value = false
   }
 
   function getOne(id: string) {
     const book = books.value?.find(b => b.id === id)
 
     if (!book) {
-      const { data: book } = usePromise(fetchBook(id))
-      return book
+      const { data: book, isPending: isLoading } = usePromise(fetchBook(id))
+      return reactive({ book, isLoading })
     }
 
-    return ref(book)
+    return reactive({ book, isLoading: false })
   }
 
   async function create(book: BookData) {
@@ -50,6 +53,7 @@ export const useBooksStore = defineStore('books', () => {
   return {
     all: books,
     isEmpty,
+    isLoading,
     getOne,
     create,
     edit,
