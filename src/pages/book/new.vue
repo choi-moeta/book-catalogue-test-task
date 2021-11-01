@@ -23,7 +23,7 @@ async function handleCreate(newBook: BookData) {
     <app-title>📕 New book</app-title>
     <app-book-editable
       :book="book"
-      hide-cancel
+      :hide-cancel="true"
       save-text="Create"
       @save="handleCreate"
     />
