@@ -17,16 +17,18 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  (event: 'change', book: BookData): void
-  (event: 'error', error?: Error): void
   (event: 'save', book: BookData): void
   (event: 'cancel'): void
 }>()
+
+// validate on mount
+onMounted(handleChange)
 
 type FormBookData = {
   name: string
   authors: string[]
   year: number
+  // rating can be empty string (empty input)
   rating?: number | ''
   ISBN?: string
 }
@@ -38,60 +40,79 @@ const innerBook = reactive<FormBookData>({
   ...unref(props.book),
 })
 
-const errors = reactive<Record<string, string | null>>({
-  name: null,
-  authors: null,
-  rating: null,
-  year: null,
-  ISBN: null,
-})
+function handleCancel() {
+  emit('cancel')
+}
 
+function handleSave() {
+  emit('save', normalizeBook(innerBook))
+}
+
+function normalizeBook(book: FormBookData) {
+  const bookCopy = { ...book }
+  // delete rating, isbn, because firebase can't add docs with fields that are explicitly undefined
+  if (bookCopy.rating === '' || bookCopy.rating === undefined) {
+    delete bookCopy.rating
+  }
+  if (bookCopy.ISBN === '' || bookCopy.ISBN === undefined) {
+    delete bookCopy.ISBN
+  }
+
+  return bookCopy as BookData
+}
+
+function handleAuthorChange(i: number, e: Event) {
+  innerBook.authors[i] = (e.target as HTMLInputElement).value
+  handleChange()
+}
+
+function handleAuthorDelete(idx: number) {
+  // filter out by index
+  innerBook.authors = innerBook.authors.filter((_, aIdx) => idx !== aIdx)
+}
+
+function addEmptyAuthor() {
+  innerBook.authors.push('')
+}
+
+type Errors = Record<string, string | null>
+
+const errors = reactive<Errors>({})
 const isError = computed(() => Boolean(Object.values(errors).find(e => typeof e === 'string')))
 
-// validate form
-onMounted(handleChange)
-
 function handleChange() {
+  validateBook(innerBook, errors)
+}
+
+function validateBook(book: FormBookData, errors: Errors) {
   // reset
   Object.keys(errors).map(key => errors[key] = null)
 
-  if (innerBook.name === '') {
+  if (book.name === '') {
     errors.name = 'Name shouldn\'t be empty.'
   }
-  if (innerBook.authors.length === 0) {
+  if (book.authors.length === 0) {
     errors.authors = 'Book should have at least one author.'
   }
-  if (innerBook.authors.find(a => a === '')) {
+  if (book.authors.find(a => a === '') !== undefined) {
     errors.authors = 'Author shouldn\'t be empty.'
   }
-  if (innerBook.rating
-    && (innerBook.rating > BOOK_RATING_MAX
-    || innerBook.rating < BOOK_RATING_MIN)) {
+  if (book.rating
+    && (book.rating > BOOK_RATING_MAX
+    || book.rating < BOOK_RATING_MIN)) {
     errors.rating = 'Rating must be between 0 and 10'
   }
-  if (innerBook.year
-    && (innerBook.year > BOOK_YEAR_MAX
-    || innerBook.year < BOOK_YEAR_MIN)) {
+  if (book.year
+    && (book.year > BOOK_YEAR_MAX
+    || book.year < BOOK_YEAR_MIN)) {
     errors.year = 'Year must be between 0 and 3000'
   }
-  if (innerBook.ISBN && !validateISBN(innerBook.ISBN)) {
+  if (book.ISBN && !isValidISBN(book.ISBN)) {
     errors.ISBN = 'Invalid ISBN'
   }
-
-  if (innerBook.rating === '' || innerBook.rating === undefined) {
-    delete innerBook.rating
-  }
-  if (innerBook.ISBN === '' || innerBook.ISBN === undefined) {
-    delete innerBook.ISBN
-  }
-
-  if (isError.value) {
-    return emit('error')
-  }
-  return emit('change', { ...innerBook } as BookData)
 }
 
-function validateISBN(str: string) {
+function isValidISBN(str: string) {
   const digits = str
     .split('-')
     .join('')
@@ -106,28 +127,6 @@ function validateISBN(str: string) {
   }
 
   return false
-}
-
-function handleAuthorChange(i: number, e: Event) {
-  innerBook.authors[i] = (e.target as HTMLInputElement).value
-  handleChange()
-}
-
-function deleteAuthor(i: number) {
-  // filter out by index
-  innerBook.authors = innerBook.authors.filter((_, _i) => i !== _i)
-}
-
-function addEmptyAuthor() {
-  innerBook.authors.push('')
-}
-
-function handleCancel() {
-  emit('cancel')
-}
-
-function handleSave() {
-  emit('save', innerBook as BookData)
 }
 </script>
 
@@ -155,7 +154,7 @@ function handleSave() {
               :value="author"
               @change="handleAuthorChange(i, $event)"
             >
-            <app-button :icon="true" type="transparent" @click="deleteAuthor(i)">
+            <app-button :icon="true" type="transparent" @click="handleAuthorDelete(i)">
               <icon-carbon:close />
             </app-button>
           </div>
