@@ -33,12 +33,6 @@ function stopEditing() {
 function saveEditing(newBook: BookData) {
   if (book.value) {
     books.edit(book.value.id, newBook)
-
-    book.value = {
-      ...book.value,
-      ...newBook,
-    }
-
     stopEditing()
   }
 }

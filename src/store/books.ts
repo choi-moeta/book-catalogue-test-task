@@ -25,26 +25,61 @@ export const useBooksStore = defineStore('books', () => {
   }
 
   function getOne(id: string) {
-    const book = books.value?.find(b => b.id === id)
+    const existingBook = computed(() => books.value?.find(b => b.id === id))
 
-    if (!book) {
-      const { data: book, isPending: isLoading } = usePromise(fetchBook(id))
-      return reactive({ book, isLoading })
+    if (existingBook) {
+      return reactive({ book: existingBook, isLoading: false })
     }
 
-    return reactive({ book, isLoading: false })
+    const book = ref<Book | null>()
+    const isLoading = ref(true)
+
+    // done this way so i can push book into books
+    fetchBook(id).then((fetchedBook) => {
+      book.value = fetchedBook
+      isLoading.value = false
+
+      if (fetchedBook) {
+        books.value?.push(fetchedBook)
+      }
+    })
+
+    return reactive({ book, isLoading })
   }
 
   async function create(book: BookData) {
-    return createBook(book)
+    const bookRef = await createBook(book)
+
+    // update locally and refetch
+    books.value?.push({
+      id: bookRef.id,
+      ...book,
+    })
+    fetch()
+
+    return bookRef
   }
 
   async function edit(id: string, book: BookData) {
-    return editBook(id, book)
+    const bookRef = await editBook(id, book)
+
+    // changing this way so the reactivity works
+    const idx = books.value?.reduce<number | undefined>((acc, cur, idx) => cur.id === id ? idx : acc, undefined)
+    if (books.value && idx !== undefined) {
+      books.value[idx] = { id, ...book }
+    }
+    fetch()
+
+    return bookRef
   }
 
-  function del(id: string) {
-    deleteBook(id)
+  async function del(id: string) {
+    const bookRef = await deleteBook(id)
+
+    books.value = books.value?.filter(b => b.id !== id)
+    fetch()
+
+    return bookRef
   }
 
   // initialization
