@@ -6,6 +6,7 @@ const books = useBooksStore()
 
 const groupedBooks = computed(() => {
   if (!books.isEmpty) {
+    // creating object { "year": books[] }
     const groupedObj = books.all!
       .reduce<Record<number, Book[]>>(
         (acc, cur) => acc[cur.year]
@@ -14,6 +15,7 @@ const groupedBooks = computed(() => {
         {},
       )
 
+    // converting into { year, books }[]
     return Object.entries(groupedObj)
       .map(([year, books]) => ({ year: Number(year), books }))
       .sort((a, b) => b.year - a.year)

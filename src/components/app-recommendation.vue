@@ -5,6 +5,7 @@ const books = useBooksStore()
 
 const recommendedBook = computed(() => {
   if (!books.isEmpty) {
+    // sort books by rating
     const booksByRating = books.all!
       .filter(b => b.year < new Date().getFullYear() - 3)
       .sort((b1, b2) => (b2.rating ?? -1) - (b1.rating ?? -1))
@@ -13,9 +14,12 @@ const recommendedBook = computed(() => {
       return null
     }
 
+    // first book is book with highest rating
     const bestRating = booksByRating[0].rating
+    // searching if there more books of highest rating
     const bestBooks = booksByRating.filter(b => b.rating === bestRating)
 
+    // return random of best books
     const randomIndex = Math.floor(Math.random() * bestBooks.length)
     return bestBooks[randomIndex]
   }
