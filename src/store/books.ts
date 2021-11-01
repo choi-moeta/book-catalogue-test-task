@@ -1,5 +1,4 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { usePromise } from 'vue-promised'
 import {
   Book,
   BookData,
@@ -67,8 +66,8 @@ export const useBooksStore = defineStore('books', () => {
     const idx = books.value?.reduce<number | undefined>((acc, cur, idx) => cur.id === id ? idx : acc, undefined)
     if (books.value && idx !== undefined) {
       books.value[idx] = { id, ...book }
+      fetch()
     }
-    fetch()
 
     return bookRef
   }

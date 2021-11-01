@@ -15,7 +15,7 @@ const groupedBooks = computed(() => {
         {},
       )
 
-    // converting into { year, books }[]
+    // converting into { year, books }[] and sort
     return Object.entries(groupedObj)
       .map(([year, books]) => ({ year: Number(year), books }))
       .sort((a, b) => b.year - a.year)
