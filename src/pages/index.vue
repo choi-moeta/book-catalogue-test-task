@@ -9,8 +9,8 @@ const groupBy = ref<'year' | 'rating' | 'authors'>('year')
       px-4 pb-8 md:(px-8)
       md:mt-100px
       max-w-screen-xl
-      grid gap-4 grid-cols-1
-      md:(gap-8 grid-cols-[1fr,minmax(240px,320px)])
+      grid gap-8 grid-cols-1
+      md:(grid-cols-[1fr,minmax(240px,320px)])
     "
   >
     <aside class="self-stretch md:order-2">
@@ -27,9 +27,7 @@ const groupBy = ref<'year' | 'rating' | 'authors'>('year')
           </app-title>
           <app-filters v-model:group-by="groupBy" />
         </div>
-        <div class="flex justify-center">
-          <a class="text-lg text-dim hover:text-purple-500" href="https://github.com/choi-moeta/book-catalogue-test-task" title="source code"><icon-carbon:logo-github /></a>
-        </div>
+        <app-footer class="<md:hidden" />
       </div>
     </aside>
     <main class="flex flex-col">
@@ -49,5 +47,6 @@ const groupBy = ref<'year' | 'rating' | 'authors'>('year')
         class="w-full md:order-1"
       />
     </main>
+    <app-footer class="md:hidden" />
   </div>
 </template>
