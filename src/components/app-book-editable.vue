@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Book, BookData } from '../firebase'
+import { BookData } from '../firebase'
 import {
   BOOK_YEAR_MAX,
   BOOK_YEAR_MIN,
