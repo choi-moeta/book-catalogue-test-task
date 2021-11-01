@@ -131,7 +131,7 @@ function isValidISBN(str: string) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <form class="flex flex-col gap-4" @submit.prevent>
     <app-block class="flex flex-col gap-2 group">
       <app-book-editable-entry
         name="name"
@@ -214,5 +214,5 @@ function isValidISBN(str: string) {
         Save
       </app-button>
     </div>
-  </div>
+  </form>
 </template>

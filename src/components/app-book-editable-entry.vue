@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
+  <label class="flex flex-col gap-2">
     <div class="flex gap-2">
       <div class="text-dim">
         {{ name }}:
@@ -20,5 +20,5 @@ defineProps<{
         </template>
       </div>
     </div>
-  </div>
+  </label>
 </template>
