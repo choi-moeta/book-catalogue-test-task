@@ -4,14 +4,8 @@ import { useBooksStore } from '../store/books'
 
 const props = withDefaults(defineProps<{
   groupBy?: 'year' | 'rating' | 'authors',
-  sortBy?: 'year' | 'rating' | 'name' | 'ISBN',
-  sortGroupsDescending?: boolean,
-  sortBooksDescending?: boolean,
 }>(), {
   groupBy: 'year',
-  sortBy: 'name',
-  // sortGroupsDescending?: boolean,
-  // sortBooksDescending?: boolean,
 })
 
 const books = useBooksStore()
