@@ -16,6 +16,7 @@ declare module 'vue' {
     BookPageWrap: typeof import('./components/book-page-wrap.vue')['default']
     'IconCarbon:add': typeof import('~icons/carbon/add')['default']
     'IconCarbon:close': typeof import('~icons/carbon/close')['default']
+    'IconCarbon:logoGithub': typeof import('~icons/carbon/logo-github')['default']
   }
 }
 
