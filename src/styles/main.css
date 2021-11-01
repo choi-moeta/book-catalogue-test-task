@@ -23,7 +23,7 @@ body {
 
 select,
 input {
-  @apply bg-transparent rounded px-2 py-0.5 border border-gray-300 dark:border-gray-700
+  @apply bg-transparent rounded px-2 pt-0.5 pb-1 border border-gray-300 dark:border-gray-700
 }
 
 option {
