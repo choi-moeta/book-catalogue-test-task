@@ -1,26 +1,69 @@
 <script setup lang="ts">
-import { Book } from '../firebase'
+import { Book, BookData } from '../firebase'
 import { useBooksStore } from '../store/books'
+
+const props = withDefaults(defineProps<{
+  groupBy?: 'year' | 'rating' | 'authors',
+  sortBy?: 'year' | 'rating' | 'name' | 'ISBN',
+  sortGroupsDescending?: boolean,
+  sortBooksDescending?: boolean,
+}>(), {
+  groupBy: 'year',
+  sortBy: 'name',
+  // sortGroupsDescending?: boolean,
+  // sortBooksDescending?: boolean,
+})
 
 const books = useBooksStore()
 
 const groupedBooks = computed(() => {
   if (!books.isEmpty) {
-    // creating object { "year": books[] }
-    const groupedObj = books.all!
-      .reduce<Record<number, Book[]>>(
-        (acc, cur) => acc[cur.year]
-          ? { ...acc, [cur.year]: [...acc[cur.year], cur] }
-          : { ...acc, [cur.year]: [cur] },
-        {},
-      )
+    const groupBy = props.groupBy
 
-    // converting into { year, books }[] and sort
-    return Object.entries(groupedObj)
-      .map(([year, books]) => ({ year: Number(year), books }))
-      .sort((a, b) => b.year - a.year)
-      .map(({ year, books }) => ({ year, books: books.sort((a, b) => a.name > b.name ? 1 : -1) }))
+    const groupedObj: Record<string, Book[]> = {}
+
+    for (const book of books.all!) {
+      let groupNames: string[] = []
+
+      if (groupBy === 'authors') {
+        groupNames = book[groupBy]
+      }
+      else {
+        groupNames = [book[groupBy] === undefined ? 'None' : String(book[groupBy]!)]
+      }
+
+      groupNames.forEach((name) => {
+        if (groupedObj[name]) {
+          groupedObj[name] = [...groupedObj[name], book]
+        }
+        else {
+          groupedObj[name] = [book]
+        }
+      })
+    }
+
+    // converting into { year, books }[]
+    const groupedArr = Object.entries(groupedObj)
+      .map(([groupName, books]) => ({ groupName, books }))
+      // sort groups
+      .sort((a, b) => {
+        if (groupBy === 'rating' || groupBy === 'year') {
+          if (a.groupName === 'None') {
+            return 1
+          }
+          return Number(a.groupName) > Number(b.groupName) ? -1 : 1
+        }
+        return a.groupName.toLowerCase() > b.groupName.toLowerCase() ? -1 : 1
+      })
+      // sort books in groups
+      .map(({ groupName, books }) => ({
+        groupName,
+        books: books.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1),
+      }))
+
+    return groupedArr
   }
+
   return []
 })
 </script>
@@ -31,10 +74,10 @@ const groupedBooks = computed(() => {
   </template>
   <template v-else>
     <div class="flex flex-col gap-4">
-      <template v-for="(group, groupIdx) of groupedBooks" :key="group.year">
+      <template v-for="(group, groupIdx) of groupedBooks" :key="group.groupName">
         <details :open="groupIdx == 0" class="flex flex-col">
           <summary class="text-bright mx-4 tracking-wider">
-            {{ group.year }}
+            {{ group.groupName }}
           </summary>
           <div
             class="

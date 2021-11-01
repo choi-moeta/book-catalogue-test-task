@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const groupBy = ref<'year' | 'rating' | 'authors'>('year')
 </script>
 
 <template>
@@ -13,11 +14,19 @@
     "
   >
     <aside class="self-stretch md:order-2">
-      <div class="flex flex-col gap-4 sticky top-0 pt-4">
-        <app-title :level="2">
-          ⭐ Recommendation
-        </app-title>
-        <app-recommendation />
+      <div class="flex flex-col gap-12 sticky top-0 pt-4">
+        <div class="flex flex-col gap-4">
+          <app-title :level="2">
+            ⭐ Recommendation
+          </app-title>
+          <app-recommendation />
+        </div>
+        <div class="flex flex-col gap-4">
+          <app-title :level="2">
+            🔧 Filters
+          </app-title>
+          <app-filters v-model:group-by="groupBy" />
+        </div>
         <div class="flex justify-center">
           <a class="text-lg text-dim hover:text-purple-500" href="https://github.com/choi-moeta/book-catalogue-test-task" title="source code"><icon-carbon:logo-github /></a>
         </div>
@@ -35,7 +44,10 @@
           New book
         </app-button>
       </div>
-      <app-books class="w-full md:order-1" />
+      <app-books
+        :group-by="groupBy"
+        class="w-full md:order-1"
+      />
     </main>
   </div>
 </template>

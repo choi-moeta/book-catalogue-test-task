@@ -10,6 +10,7 @@ declare module 'vue' {
     AppBookEditableEntry: typeof import('./components/app-book-editable-entry.vue')['default']
     AppBooks: typeof import('./components/app-books.vue')['default']
     AppButton: typeof import('./components/app-button.vue')['default']
+    AppFilters: typeof import('./components/app-filters.vue')['default']
     AppProfile: typeof import('./components/app-profile.vue')['default']
     AppRecommendation: typeof import('./components/app-recommendation.vue')['default']
     AppTitle: typeof import('./components/app-title.vue')['default']
