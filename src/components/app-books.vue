@@ -3,7 +3,7 @@ import { Book, BookData } from '../firebase'
 import { useBooksStore } from '../store/books'
 
 const props = withDefaults(defineProps<{
-  groupBy?: 'year' | 'rating' | 'authors',
+  groupBy?: 'year' | 'rating' | 'authors'
 }>(), {
   groupBy: 'year',
 })
@@ -11,54 +11,54 @@ const props = withDefaults(defineProps<{
 const books = useBooksStore()
 
 const groupedBooks = computed(() => {
-  if (!books.isEmpty) {
-    const groupBy = props.groupBy
-
-    const groupedObj: Record<string, Book[]> = {}
-
-    for (const book of books.all!) {
-      let groupNames: string[] = []
-
-      if (groupBy === 'authors') {
-        groupNames = book[groupBy]
-      }
-      else {
-        groupNames = [book[groupBy] === undefined ? 'None' : String(book[groupBy]!)]
-      }
-
-      groupNames.forEach((name) => {
-        if (groupedObj[name]) {
-          groupedObj[name] = [...groupedObj[name], book]
-        }
-        else {
-          groupedObj[name] = [book]
-        }
-      })
-    }
-
-    // converting into { year, books }[]
-    const groupedArr = Object.entries(groupedObj)
-      .map(([groupName, books]) => ({ groupName, books }))
-      // sort groups
-      .sort((a, b) => {
-        if (groupBy === 'rating' || groupBy === 'year') {
-          if (a.groupName === 'None') {
-            return 1
-          }
-          return Number(a.groupName) > Number(b.groupName) ? -1 : 1
-        }
-        return a.groupName.toLowerCase() > b.groupName.toLowerCase() ? -1 : 1
-      })
-      // sort books in groups
-      .map(({ groupName, books }) => ({
-        groupName,
-        books: books.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1),
-      }))
-
-    return groupedArr
+  if (books.isEmpty) {
+    return []
   }
 
-  return []
+  const groupBy = props.groupBy
+
+  const groupedObj: Record<string, Book[]> = {}
+
+  for (const book of books.all!) {
+    let groupNames: string[] = []
+
+    if (groupBy === 'authors') {
+      groupNames = book[groupBy]
+    }
+    else {
+      groupNames = [book[groupBy] === undefined ? 'None' : String(book[groupBy]!)]
+    }
+
+    groupNames.forEach((name) => {
+      if (groupedObj[name]) {
+        groupedObj[name] = [...groupedObj[name], book]
+      }
+      else {
+        groupedObj[name] = [book]
+      }
+    })
+  }
+
+  // converting into { year, books }[]
+  const groupedArr = Object.entries(groupedObj)
+    .map(([groupName, books]) => ({ groupName, books }))
+    // sort groups
+    .sort((a, b) => {
+      if (groupBy === 'rating' || groupBy === 'year') {
+        if (a.groupName === 'None') {
+          return 1
+        }
+        return Number(a.groupName) > Number(b.groupName) ? -1 : 1
+      }
+      return a.groupName.toLowerCase() > b.groupName.toLowerCase() ? -1 : 1
+    })
+    // sort books in groups
+    .map(({ groupName, books }) => ({
+      groupName,
+      books: books.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1),
+    }))
+
+  return groupedArr
 })
 </script>
 

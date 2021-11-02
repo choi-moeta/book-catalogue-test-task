@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Book } from '../firebase'
 
-const props = defineProps<{book: Book}>()
+const props = defineProps<{ book: Book }>()
 
 // [a,b,c] -> 'a, b and c'
 const authorsStr = computed(() => props.book.authors.reduce((acc, cur, i, arr) => i + 1 < arr.length ? `${acc}, ${cur}` : `${acc} and ${cur}`))
