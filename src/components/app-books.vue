@@ -17,27 +17,19 @@ const groupedBooks = computed(() => {
 
   const groupBy = props.groupBy
 
-  const groupedObj: Record<string, Book[]> = {}
+  const groupedObj = books.all!.reduce<Record<string, Book[]>>((booksAcc, book) => {
+    const groupNames: string[] = groupBy === 'authors'
+      ? book[groupBy]
+      : book[groupBy] === undefined
+        ? ['None']
+        : [String(book[groupBy]!)]
 
-  for (const book of books.all!) {
-    let groupNames: string[] = []
-
-    if (groupBy === 'authors') {
-      groupNames = book[groupBy]
-    }
-    else {
-      groupNames = [book[groupBy] === undefined ? 'None' : String(book[groupBy]!)]
-    }
-
-    groupNames.forEach((name) => {
-      if (groupedObj[name]) {
-        groupedObj[name] = [...groupedObj[name], book]
-      }
-      else {
-        groupedObj[name] = [book]
-      }
-    })
-  }
+    return groupNames.reduce<Record<string, Book[]>>((groupAcc, groupName) => {
+      return groupAcc[groupName]
+        ? { ...groupAcc, [groupName]: [...groupAcc[groupName], book] }
+        : { ...groupAcc, [groupName]: [book] }
+    }, booksAcc)
+  }, {})
 
   // converting into { year, books }[]
   const groupedArr = Object.entries(groupedObj)
@@ -55,7 +47,7 @@ const groupedBooks = computed(() => {
     // sort books in groups
     .map(({ groupName, books }) => ({
       groupName,
-      books: books.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1),
+      books: books.sort((a, b) => a.name.toLowerCase().trim() > b.name.toLowerCase().trim() ? 1 : -1),
     }))
 
   return groupedArr
