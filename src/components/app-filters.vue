@@ -14,7 +14,6 @@ const emit = defineEmits<{
 function handleChange(e: Event) {
   const criteria = (e.target as HTMLSelectElement).value
   if (['year', 'rating', 'authors'].includes(criteria)) {
-    console.log(criteria)
     emit('update:groupBy', criteria as Criteria)
   }
 }
